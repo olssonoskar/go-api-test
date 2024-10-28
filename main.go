@@ -9,6 +9,7 @@ import (
 	"os/signal"
 	"time"
 
+	"github.com/gorilla/mux"
 	"github.com/olsson/my-api/handlers"
 )
 
@@ -19,15 +20,27 @@ func main() {
 
 	l := log.New(os.Stdout, "my-api", log.LstdFlags)
 	albumh := handlers.NewAlbums(l)
-	simpleh := handlers.NewSimple(l)
 
-	mux := http.NewServeMux()
-	mux.Handle("/albums/", albumh)
-	mux.Handle("/hello", simpleh)
+	sm := mux.NewRouter()
+
+	getRouter := sm.Methods("GET").Subrouter()
+	getRouter.HandleFunc("/", albumh.GetAll)
+	getRouter.HandleFunc("/{id:[0-9]+}", albumh.GetAlbum)
+
+	putRouter := sm.Methods("PUT").Subrouter()
+	putRouter.Use(albumh.ValidateAlbum)
+	putRouter.HandleFunc("/{id:[0-9]+}", albumh.Update)
+
+	postRouter := sm.Methods("POST").Subrouter()
+	postRouter.Use(albumh.ValidateAlbum)
+	postRouter.HandleFunc("/", albumh.Create)
+
+	deleteRouter := sm.Methods("DELETE").Subrouter()
+	deleteRouter.HandleFunc("/", albumh.Delete)
 
 	serv := &http.Server{
 		Addr:         ":9090",
-		Handler:      mux,
+		Handler:      sm,
 		IdleTimeout:  10 * time.Second,
 		ReadTimeout:  1 * time.Second,
 		WriteTimeout: 10 * time.Second,
