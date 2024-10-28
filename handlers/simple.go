@@ -22,5 +22,5 @@ func (h *Simple) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 		http.Error(rw, "Ohno!", http.StatusBadRequest)
 		return
 	}
-	fmt.Fprintf(rw, "Updated just now, welcome %s", body)
+	fmt.Fprintf(rw, "Welcome %s!", body)
 }
