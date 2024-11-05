@@ -7,7 +7,7 @@ import (
 	"strconv"
 
 	"github.com/gorilla/mux"
-	"github.com/olsson/my-api/data"
+	"github.com/olsson/my-api/internal/data"
 )
 
 type Albums struct {

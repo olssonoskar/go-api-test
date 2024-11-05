@@ -86,4 +86,11 @@ var albumList = []*Album{
 		Tracks:   10,
 		ID:       2,
 	},
+	{
+		Name:     "Sundowning",
+		Artist:   "Sleep Token",
+		Playtime: 200,
+		Tracks:   10,
+		ID:       3,
+	},
 }

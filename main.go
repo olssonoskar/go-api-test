@@ -10,7 +10,7 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
-	"github.com/olsson/my-api/handlers"
+	"github.com/olsson/my-api/internal/handlers"
 )
 
 // Simple API based on Nic Jacksson's 'Building Microservices with Go'
